@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  etl:
+    build:
+      context: .
+      target: dev
+    env_file:
+      - env/.env.etl.dev
+    volumes:
+      - .:/home/app/
+    networks:
+      - postgres_network
+      - es_network
+    depends_on:
+      - postgres
+      - elastic
+    restart: unless-stopped
+  postgres:
+    image: postgres:13.0-alpine
+    env_file:
+      - env/.env.db.dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - postgres_network
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+  elastic:
+    image: elasticsearch:8.6.2
+    env_file:
+      - env/.env.es.dev
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - es_network
+    ports:
+      - 9200:9200
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: movies_admin_postgres_data
+    external: true
+  esdata:
+
+networks:
+  es_network:
+  postgres_network:
