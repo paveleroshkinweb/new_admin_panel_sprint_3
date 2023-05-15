@@ -9,9 +9,10 @@ class DBBase(BaseModel):
 
     @classmethod
     def get_field_mapping(cls) -> Dict[str, str]:
-        """Specify the mapping between sqlite and postgres fields"""
-        return cls.FIELD_MAPPING
+        """Specify the mapping between postgres and pydantic model. By default it matches one to one"""
+        fields = cls.__fields__.keys()
+        return {field: field for field in fields}
 
     @classmethod
     def get_meta_info(cls) -> DBMetaInfo:
-        return cls.META_INFO
+        pass
