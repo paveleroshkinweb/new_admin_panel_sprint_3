@@ -6,7 +6,7 @@ all:
 	# intentionally left empty to prevent accidental run of first recipe
 
 build:
-	docker-compose -f docker-compose.dev.yaml build --no-cache
+	docker-compose -f docker-compose.dev.yaml build
 
 dev:
 	docker-compose -f docker-compose.dev.yaml up

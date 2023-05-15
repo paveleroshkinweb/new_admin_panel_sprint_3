@@ -8,7 +8,7 @@ services:
     env_file:
       - env/.env.etl.dev
     volumes:
-      - .:/home/app/
+      - .:/app
     networks:
       - postgres_network
       - es_network
@@ -41,7 +41,7 @@ services:
 
 volumes:
   postgres_data:
-    name: movies_admin_postgres_data
+    name: movies_admin_db_data
     external: true
   esdata:
 
