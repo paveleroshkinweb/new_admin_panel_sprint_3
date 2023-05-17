@@ -1,11 +1,12 @@
 from pydantic import BaseModel
 
+from abc import ABC, abstractmethod
 from typing import Dict
 
 from .db_metainfo import DBMetaInfo
 
 
-class DBBase(BaseModel):
+class DBBase(BaseModel, ABC):
 
     @classmethod
     def get_field_mapping(cls) -> Dict[str, str]:
@@ -13,6 +14,6 @@ class DBBase(BaseModel):
         fields = cls.__fields__.keys()
         return {field: field for field in fields}
 
-    @classmethod
+    @abstractmethod
     def get_meta_info(cls) -> DBMetaInfo:
         pass

@@ -12,9 +12,11 @@ services:
     networks:
       - postgres_network
       - es_network
+      - redis_network
     depends_on:
       - postgres
       - elastic
+      - redis
     restart: unless-stopped
   postgres:
     image: postgres:13.0-alpine
@@ -38,13 +40,26 @@ services:
     ports:
       - 9200:9200
     restart: unless-stopped
+  redis:
+    image: redis:7.0.11
+    entrypoint: ["redis-server", "/etc/redis/redis.conf"]
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.dev.conf:/etc/redis/redis.conf
+    networks:
+      - redis_network
+    ports:
+      - 6379:6379
+    restart: unless-stopped
 
 volumes:
   postgres_data:
     name: movies_admin_db_data
     external: true
   esdata:
+  redis_data:
 
 networks:
   es_network:
   postgres_network:
+  redis_network:

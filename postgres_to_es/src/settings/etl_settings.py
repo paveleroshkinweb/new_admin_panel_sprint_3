@@ -36,3 +36,15 @@ class ElasticSettings(BaseSettings):
 
     class Config:
         env_prefix = f'{PREFIX}_ES_'
+
+
+class RedisSettings(BaseSettings):
+
+    host: str
+
+    port: int
+
+    db: int
+
+    class Config:
+        env_prefix = f'{PREFIX}_REDIS_'
