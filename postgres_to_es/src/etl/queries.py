@@ -26,6 +26,6 @@ SELECT
     LEFT JOIN content.genre g
         ON g.id = gfw.genre_id
     GROUP BY fw.id
-    HAVING GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) >= CAST('{last_processed_time}' AS DATE)
+    HAVING GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) >= '{last_processed_time}'
     ORDER BY last_modified;
 """
