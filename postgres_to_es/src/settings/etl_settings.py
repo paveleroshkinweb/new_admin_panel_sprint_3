@@ -34,6 +34,12 @@ class ElasticSettings(BaseSettings):
 
     port: int
 
+    schema_path: str
+
+    movies_index_name: str
+
+    movies_index_version: str
+
     class Config:
         env_prefix = f'{PREFIX}_ES_'
 
@@ -48,3 +54,11 @@ class RedisSettings(BaseSettings):
 
     class Config:
         env_prefix = f'{PREFIX}_REDIS_'
+
+
+class AppSettings(BaseSettings):
+
+    sleep_seconds: int
+
+    class Config:
+        env_prefix = f'{PREFIX}_APP_'

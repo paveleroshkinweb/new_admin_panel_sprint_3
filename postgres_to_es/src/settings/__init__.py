@@ -1,1 +1,1 @@
-from .etl_settings import DatabaseSettings, ElasticSettings, LoggerSettings, RedisSettings
+from .etl_settings import DatabaseSettings, ElasticSettings, LoggerSettings, RedisSettings, AppSettings

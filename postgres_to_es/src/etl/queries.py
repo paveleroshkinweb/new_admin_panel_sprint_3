@@ -27,6 +27,5 @@ SELECT
         ON g.id = gfw.genre_id
     GROUP BY fw.id
     HAVING GREATEST(MAX(fw.modified), MAX(g.modified), MAX(p.modified)) >= CAST('{last_processed_time}' AS DATE)
-    ORDER BY last_modified
-    LIMIT 5000;
+    ORDER BY last_modified;
 """

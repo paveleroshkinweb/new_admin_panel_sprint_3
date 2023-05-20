@@ -16,6 +16,7 @@ from typing import Generator
 import logging
 
 from settings import DatabaseSettings, ElasticSettings, RedisSettings
+from es import ESHandler
 from utils import backoff
 
 
@@ -56,14 +57,15 @@ def pg_connection_manager() -> Generator[connection, None, None]:
             pg_connection.close()
 
 
-def get_es_client() -> Elasticsearch:
+def get_es_handler() -> ESHandler:
     logger.debug("Obtaining elasticsearch connection")
     client = Elasticsearch(
         f'http://{es_settings.host}:{es_settings.port}',
         retry_on_timeout=True,
         max_retries=4
     )
-    return client
+    es_handler = ESHandler(es_client=client, schema_path=es_settings.schema_path)
+    return es_handler
 
 
 def get_redis_client() -> Redis:
