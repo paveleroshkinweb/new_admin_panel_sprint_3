@@ -34,7 +34,6 @@ class ETLProcessor:
         self.es_handler.create_index_if_not_exist(ESFilmwork.get_meta_info())
 
         state = self.get_current_state()
-        documents_indexed = 0
 
         changed_movies_query = self.get_changed_movies_query(state.last_processed_time)
         for movies_chunk in self.sql_repository.execute_lazy_query(changed_movies_query):
@@ -44,12 +43,12 @@ class ETLProcessor:
 
             logger.info(f"Processing {len(movies_chunk)} movies")
             self.save_movies_chunk(movies_chunk)
-            documents_indexed += len(movies_chunk)
+            state.documents_indexed += len(movies_chunk)
             state.last_processed_time = AggregatedFilmwork(**movies_chunk[-1]).last_modified
             self.state_storage.save_state(self.MOVIES_STATE_KEY, state)
 
         logger.info("Etl ended")
-        self.save_end_state(state, documents_indexed)
+        self.save_end_state(state)
         time.sleep(self.sleep_time)
 
     def get_changed_movies_query(self, last_processed_time: datetime) -> str:
@@ -70,9 +69,8 @@ class ETLProcessor:
 
         return prev_state
 
-    def save_end_state(self, state: ETLState, documents_indexed: int) -> None:
+    def save_end_state(self, state: ETLState) -> None:
         state.process_state = ProcessState.FINISHED
-        state.documents_indexed += documents_indexed
         state.end_time = datetime.now()
         self.state_storage.save_state(self.MOVIES_STATE_KEY, state)
 
