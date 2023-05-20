@@ -18,12 +18,12 @@ class ETLState(BaseModel):
 
     process_state: ProcessState = ProcessState.NEW
 
-    last_processed_element_time: datetime = datetime.min
+    last_processed_time: datetime = datetime.min
 
     start_time: datetime = datetime.now()
 
     # In case of etl failure we can process some elements twice so the number of rows can be > total number in database
-    total_rows_processed: int = 0
+    documents_indexed: int = 0
 
     end_time: Optional[datetime]
 
@@ -32,7 +32,7 @@ class ETLState(BaseModel):
 
     def dict(self) -> Dict[str, Any]:
         data = super().dict()
-        for field in ('id', 'start_time', 'last_processed_element_time'):
+        for field in ('id', 'start_time', 'last_processed_time'):
             data[field] = str(data[field])
         if data['end_time'] is not None:
             data['end_time'] = str(data['end_time'])

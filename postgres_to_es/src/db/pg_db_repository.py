@@ -25,7 +25,6 @@ class PostgresDBRepository(SqlDBRepository):
         with self.connection.cursor() as cursor:
             logger.info(db_logs.EXECUTING_QUERY_LOG.format(query=query))
             cursor.execute(query)
-            self.connection.commit()
             while True:
                 data = cursor.fetchmany(chunk_size)
                 if data:
