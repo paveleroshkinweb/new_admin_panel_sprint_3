@@ -23,7 +23,8 @@ services:
     env_file:
       - env/.env.db.dev
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - dbdata:/var/lib/postgresql/data/
+      - ./dump/backup.sql:/docker-entrypoint-initdb.d/dump.sql:ro
     networks:
       - postgres_network
     ports:
@@ -53,9 +54,7 @@ services:
     restart: unless-stopped
 
 volumes:
-  postgres_data:
-    name: movies_admin_db_data
-    external: true
+  dbdata:
   esdata:
   redis_data:
 
